@@ -29,3 +29,23 @@ body {
 
   color: grey;
 }
+
+.field-elem[data-odd="true"] {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.field-elem[data-odd="false"] {
+  background-color: rgba(0, 0, 0, 0.89);
+}
+
+.field-elem[data-piece="knight"] {
+  background-image: url("./knightPiece.png");
+  background-size: cover;
+  background-position: center;
+  background-size: 80%;
+  background-repeat: no-repeat;
+}
+
+.field-elem[data-possmove="true"] {
+  background: rgba(255, 0, 0, 0.9);
+}

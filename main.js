@@ -7,7 +7,7 @@ class Knight {
     return this.pos;
   }
 
-  checkMove(position) {
+  _checkMove(position) {
     return position[0] < 0 ||
       position[0] > 7 ||
       position[1] < 0 ||
@@ -16,30 +16,62 @@ class Knight {
       : true;
   }
 
-  getMoves() {
-    const possibleMoves = [
+  getMoves(position = this.pos) {
+    const allMoves = [
       // [-2, +1]
       // [-1, +2]
-      [this.pos[0] - 2, this.pos[1] + 1],
-      [this.pos[0] - 1, this.pos[1] + 2],
+      [position[0] - 2, position[1] + 1],
+      [position[0] - 1, position[1] + 2],
 
       // [+1, +2]
       // [+2, +1]
-      [this.pos[0] + 1, this.pos[1] + 2],
-      [this.pos[0] + 2, this.pos[1] + 1],
+      [position[0] + 1, position[1] + 2],
+      [position[0] + 2, position[1] + 1],
 
       // [-2, -1]
       // [-1, -2]
-      [this.pos[0] - 2, this.pos[1] - 1],
-      [this.pos[0] - 1, this.pos[1] - 2],
+      [position[0] - 2, position[1] - 1],
+      [position[0] - 1, position[1] - 2],
 
       // [+2, -1]
       // [+1, -2]
-      [this.pos[0] + 2, this.pos[1] - 1],
-      [this.pos[0] + 1, this.pos[1] - 2],
+      [position[0] + 2, position[1] - 1],
+      [position[0] + 1, position[1] - 2],
     ];
 
-    possibleMoves.forEach((move) => console.log(move, this.checkMove(move)));
+    const possibleMoves = [];
+
+    allMoves.forEach((move) => {
+      if (this._checkMove(move)) possibleMoves.push(move);
+    });
+
+    return possibleMoves;
+  }
+
+  _checkPossibleMove(possibleMoves, position) {
+    return possibleMoves.find(
+      (move) => move[0] === position[0] && move[1] === position[1]
+    )
+      ? true
+      : false;
+  }
+
+  knightMoves(position) {
+    const possibleMoves = this.getMoves();
+
+    // if move is possible
+    if (this._checkPossibleMove(possibleMoves, position)) {
+      this.pos = position;
+
+      createGameboard();
+      renderGameboard();
+      renderKnight(this);
+      renderPossibleMoves(this);
+
+      return;
+    }
+
+    return "Can't Move!";
   }
 }
 
@@ -59,34 +91,77 @@ const checkColor = (position) => {
   return (position[0] + position[1]) % 2 === 0;
 };
 
+const bindFieldEventListener = (field) => {
+  return field;
+};
+
+const createField = (field) => {
+  const fieldElem = document.createElement("div");
+  fieldElem.dataset.possmove = false;
+  fieldElem.dataset.piece = null;
+  fieldElem.dataset.pos = field;
+  fieldElem.classList.add("field-elem");
+
+  // position number
+  fieldElem.innerText = field;
+
+  // field color
+  if (checkColor(field)) fieldElem.dataset.odd = true;
+  else fieldElem.dataset.odd = false;
+
+  fieldElem.addEventListener("click", (e) => {
+    const move = [];
+    move.push(Number(e.target.dataset.pos[0]));
+    move.push(Number(e.target.dataset.pos[2]));
+
+    return knightPiece.knightMoves(move);
+  });
+
+  return fieldElem;
+};
+
 const renderGameboard = () => {
   const gamebaordArr = createGameboard();
   const gamebaordElem = document.querySelector("#gameboardElem");
 
   gamebaordElem.innerHTML = "";
 
-  let count = 0;
-
   gamebaordArr.forEach((field) => {
-    const fieldElem = document.createElement("div");
-    fieldElem.classList.add("field-elem");
-
-    // position number
-    fieldElem.innerText = field;
-
-    // field color
-    if (checkColor(field))
-      fieldElem.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
-    else fieldElem.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
-
-    gamebaordElem.appendChild(fieldElem);
-    count++;
+    gamebaordElem.appendChild(createField(field));
   });
 };
+
+const renderKnight = (knight) => {
+  const knightPos = knight.getPos();
+
+  const knightField = document.querySelector(
+    `.field-elem[data-pos="${knightPos[0]},${knightPos[1]}"]`
+  );
+
+  knightField.dataset.piece = "knight";
+  return;
+};
+
+const renderPossibleMoves = (knight) => {
+  const possibleMoves = knight.getMoves();
+
+  possibleMoves.forEach((move) => {
+    const possibleField = document.querySelector(
+      `.field-elem[data-pos="${move[0]},${move[1]}"]`
+    );
+
+    possibleField.dataset.possmove = true;
+  });
+
+  return possibleMoves;
+};
+
+createGameboard();
+const knightPiece = new Knight([6, 5]);
+
 renderGameboard();
+renderKnight(knightPiece);
 
-const gameboardArr = createGameboard();
+console.log(renderPossibleMoves(knightPiece));
 
-const knightPiece = new Knight([0, 0]);
-
-console.log(knightPiece.getMoves());
+console.log(knightPiece.knightMoves([4, 4]));
