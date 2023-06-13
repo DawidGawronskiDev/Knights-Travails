@@ -3,6 +3,11 @@ import "./style.css";
 import King from "./King";
 import Knight from "./Knight";
 
+import { renderPossibleMoves } from "./renderFunctions";
+import { renderGameboard } from "./renderFunctions";
+import { renderKnight } from "./renderFunctions";
+import { renderKing } from "./renderFunctions";
+
 let placeKingBoolean = false;
 let placeKnightBoolean = false;
 
@@ -11,11 +16,6 @@ let isKnight = false;
 
 let knightPiece;
 let kingPiece;
-
-import { renderPossibleMoves } from "./renderFunctions";
-import { renderGameboard } from "./renderFunctions";
-import { renderKnight } from "./renderFunctions";
-import { renderKing } from "./renderFunctions";
 
 renderGameboard();
 
@@ -32,6 +32,10 @@ const renderKnightTravails = (path) => {
 };
 
 const mouseTracker = document.querySelector("#mouseTracker");
+const placeKingBtn = document.querySelector("#placeKingBtn");
+const placeKnightBtn = document.querySelector("#placeKnightBtn");
+const fieldsArr = Array.from(document.querySelectorAll(".field-elem"));
+
 window.addEventListener("mousemove", (e) => {
   const x = e.x + 8;
   const y = e.y + 8;
@@ -39,21 +43,18 @@ window.addEventListener("mousemove", (e) => {
   mouseTracker.style.top = `${y}px`;
 });
 
-const placeKingBtn = document.querySelector("#placeKingBtn");
 placeKingBtn.addEventListener("click", () => {
   if (isKing) return;
   placeKingBoolean = true;
   mouseTracker.dataset.piece = "king";
 });
 
-const placeKnightBtn = document.querySelector("#placeKnightBtn");
 placeKnightBtn.addEventListener("click", () => {
   if (isKnight) return;
   placeKnightBoolean = true;
   mouseTracker.dataset.piece = "knight";
 });
 
-const fieldsArr = Array.from(document.querySelectorAll(".field-elem"));
 fieldsArr.forEach((field) => {
   field.addEventListener("click", (e) => {
     if (placeKingBoolean && !isKing) {
