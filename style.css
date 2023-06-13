@@ -11,6 +11,8 @@ body {
   place-content: center;
 
   grid-template-columns: 80%;
+
+  overflow: hidden;
 }
 
 #gameboardElem {
@@ -27,6 +29,11 @@ body {
   display: grid;
   place-content: center;
 
+  background-size: cover;
+  background-position: center;
+  background-size: 66%;
+  background-repeat: no-repeat;
+
   color: grey;
 }
 
@@ -40,12 +47,47 @@ body {
 
 .field-elem[data-piece="knight"] {
   background-image: url("./knightPiece.png");
-  background-size: cover;
-  background-position: center;
-  background-size: 80%;
-  background-repeat: no-repeat;
+}
+
+.field-elem[data-piece="king"] {
+  background-image: url("./kingPiece.png");
 }
 
 .field-elem[data-possmove="true"] {
-  background: rgba(255, 0, 0, 0.9);
+  background-color: rgba(255, 0, 0, 0.9);
+}
+
+#buttonsContainer {
+  width: 100%;
+  height: 75px;
+
+  display: grid;
+  grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+  gap: 8px;
+
+  margin: 8px 0;
+}
+
+#startBtn {
+  grid-column: span 2;
+}
+
+#mouseTracker {
+  position: absolute;
+
+  aspect-ratio: 1 / 1;
+  width: 50px;
+
+  background-size: cover;
+  background-position: center;
+  background-size: 66%;
+  background-repeat: no-repeat;
+}
+
+#mouseTracker[data-piece="king"] {
+  background-image: url("./kingPiece.png");
+}
+
+#mouseTracker[data-piece="knight"] {
+  background-image: url("./knightPiece.png");
 }
