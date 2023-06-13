@@ -1,3 +1,5 @@
+import "./style.css";
+
 class King {
   constructor(pos) {
     this.pos = pos;

@@ -46,11 +46,11 @@ body {
 }
 
 .field-elem[data-piece="knight"] {
-  background-image: url("./knightPiece.png");
+  background-image: url("./Images/knightPiece.png");
 }
 
 .field-elem[data-piece="king"] {
-  background-image: url("./kingPiece.png");
+  background-image: url("./Images/kingPiece.png");
 }
 
 .field-elem[data-possmove="true"] {
@@ -85,9 +85,9 @@ body {
 }
 
 #mouseTracker[data-piece="king"] {
-  background-image: url("./kingPiece.png");
+  background-image: url("./Images/kingPiece.png");
 }
 
 #mouseTracker[data-piece="knight"] {
-  background-image: url("./knightPiece.png");
+  background-image: url("./Images/knightPiece.png");
 }
